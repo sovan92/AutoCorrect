@@ -7,17 +7,11 @@ import java.nio.file.DirectoryIteratorException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
 import com.oracle.model.WordListModel;
 
 
-
 public class AutoCorrectUtils {
-
-
-
-
-
-
 
 
     // Initilize my dictionary of words
@@ -25,11 +19,14 @@ public class AutoCorrectUtils {
 
         List<String> inputList = null;
 
-        if(fileName!=null&&!fileName.trim().equalsIgnoreCase("")) {
+        if (fileName != null && !fileName.trim().equalsIgnoreCase("")) {
             try {
 
-                ClassLoader classLoader = new AutoCorrectUtils().getClass().getClassLoader();
-                BufferedReader br = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(fileName)));
+                File file = new File(fileName);
+                if (!file.exists()) {
+                    throw new FileNotFoundException(String.format("File with path %s is not found.", file.getAbsolutePath()));
+                }
+                BufferedReader br = new BufferedReader(new FileReader(file));
                 inputList = br.lines().skip(1).map((word) -> word.trim()).collect(Collectors.toList());
                 br.close();
             } catch (IOException e) {
@@ -43,7 +40,7 @@ public class AutoCorrectUtils {
     // Initialize my edit Distance map
     public static Map<Integer, List<String>> editMapInitializer(String word) {
 
-        if(word==null||word.trim().length()==0){
+        if (word == null || word.trim().length() == 0) {
             word = "";
         }
 
@@ -55,7 +52,7 @@ public class AutoCorrectUtils {
     }
 
     //Get my Input through Scanner.
-    public static String getInput(){
+    public static String getInput() {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("::Enter the Word::");
@@ -66,7 +63,7 @@ public class AutoCorrectUtils {
 
     // Process Edit Distance for all the words in a dictionary .
     // This can be altered to include a Trie data structure.
-    public static Map<Integer,List<String>> processDistanceDictionary(String inputWord,List<String> wordLis){
+    public static Map<Integer, List<String>> processDistanceDictionary(String inputWord, List<String> wordLis) {
 
         Map<Integer, List<String>> editMap = AutoCorrectUtils.editMapInitializer(inputWord);
 
@@ -87,17 +84,17 @@ public class AutoCorrectUtils {
     }
 
     // Get the Suggested word after going through the list edit distance Map
-    public static String getWordSuggestion(String word , WordListModel model) throws DictionaryInitializeException{
+    public static String getWordSuggestion(String word, WordListModel model) throws DictionaryInitializeException {
 
         List<String> wordList = model.getWordList();
 
-        if(wordList==null){
+        if (wordList == null) {
             throw new DictionaryInitializeException();
         }
 
 
         int inputWordLength = word.length();
-        Map<Integer, List<String>> editMap  = processDistanceDictionary(word,wordList);
+        Map<Integer, List<String>> editMap = processDistanceDictionary(word, wordList);
         for (int i = 0; i < inputWordLength; i++) {
 
             if (editMap.get(i).size() != 0) {

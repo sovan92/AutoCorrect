@@ -17,7 +17,6 @@ public class AutoCorrect {
         List<String> wordList = AutoCorrectUtils.initializeDictionary(FILE_LOCAION);
 
 
-
         System.out.println("*** Auto Correct Functionality *** ");
 
         System.out.println("*** Press 0 to terminate ***");
@@ -28,8 +27,11 @@ public class AutoCorrect {
             String input = "";
             while (!input.equalsIgnoreCase("0")) {
                 input = AutoCorrectUtils.getInput();
+                if (input.equalsIgnoreCase("0")) {
+                    break;
+                }
                 try {
-                    System.out.println("::Suggested Word:: " + AutoCorrectUtils.getWordSuggestion(input,()->wordList));
+                    System.out.println("::Suggested Word:: " + AutoCorrectUtils.getWordSuggestion(input, () -> wordList));
                 } catch (DictionaryInitializeException e) {
                     e.printStackTrace();
                     input = "0";

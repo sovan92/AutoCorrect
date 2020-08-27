@@ -9,7 +9,9 @@ import static org.mockito.Mockito.*;
 
 public class AutoCorrectUtilsTest   {
 
-    public static final String FILE_LOCAION = "words.txt";
+    public static final String FILE_LOCATION = "src/main/resources/words.txt";
+
+
 
     @Test
     public void testInitializeDictionaryWithNullFileName(){
@@ -46,7 +48,7 @@ public class AutoCorrectUtilsTest   {
     @Test
     public void testProcessDistanceDictionary(){
 
-        List<String> testWordList = AutoCorrectUtils.initializeDictionary(FILE_LOCAION);
+        List<String> testWordList = AutoCorrectUtils.initializeDictionary(FILE_LOCATION);
 
         Map<Integer,List<String>> editMap = AutoCorrectUtils.processDistanceDictionary("aaa",testWordList);
 
@@ -61,7 +63,7 @@ public class AutoCorrectUtilsTest   {
     @Test
     public void testGetWordSuggestion() throws Exception{
 
-        List<String> testWordList = AutoCorrectUtils.initializeDictionary(FILE_LOCAION);
+        List<String> testWordList = AutoCorrectUtils.initializeDictionary(FILE_LOCATION);
 
          String x  = AutoCorrectUtils.getWordSuggestion("Sovan",()->testWordList);
          assertEquals(x,"Sevan");
