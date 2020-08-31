@@ -1,5 +1,14 @@
 package com.oracle.utils;
 
+/*
+
+* Edit Distance : Common Dynamic programing algorithm with a Bottom's up solution .
+
+* I have taken the liberty of taking it from https://www.programcreek.com/2013/12/edit-distance-in-java/
+
+ */
+
+
 public class EditDistance {
     public static int calculateEditDistance(String word1, String word2) {
 
